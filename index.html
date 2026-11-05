@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Дорожная карта партнёра</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap">
+<style>
+/* Layout: вертикальная дорога — линия слева, станции-шаги по порядку, три этапа (до, суббота, после); колонка 880px */
+:root{
+  color-scheme: dark;
+  --bg:#0B1120; --band:#0F1629; --line:#1A2340;
+  --card:#131B30; --card-line:#222C47; --chip:#1A2340;
+  --violet-deep:#1E1A52; --violet-line:#3A3390; --violet-mid:#2A2370;
+  --accent:#5B4BEB; --accent-soft:#9D92FF; --accent-text:#C9C3FF;
+  --fg:#E8ECF5; --fg-2:#D4DAE8; --muted:#B6BFD3; --dim:#8E98B0; --label:#9AA4BC;
+  --green:#7EE2A8; --green-bg:#1A3A2E; --green-text:#A9F0C8;
+  --amber:#FFC86B; --amber-bg:#3A2E14;
+  --white:#FFFFFF;
+  --display:Unbounded, "Arial Black", system-ui, sans-serif;
+  --body:Manrope, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:18px;line-height:1.55}
+*{box-sizing:border-box}
+h1,h2,h3{text-wrap:balance;overflow-wrap:break-word}
+p{text-wrap:pretty}
+a{color:var(--accent-text)}
+.nw{white-space:nowrap}
+.wrap{max-width:880px;margin:0 auto;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
+header .wrap{padding-block:24px 0}
+.brand{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.02em;color:var(--label)}
+
+.hero{padding-block:48px 32px}
+h1{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(32px,5vw,54px);line-height:1.08;letter-spacing:-.02em}
+h1 span{color:var(--accent-soft)}
+.sub{margin:18px 0 0;font-size:20px;color:var(--muted);max-width:640px}
+
+.rule{margin-top:28px;display:flex;gap:16px;align-items:flex-start;background:var(--amber-bg);border:1px solid #6B5420;border-radius:20px;padding:20px 24px}
+.rule svg{flex:none;margin-top:3px}
+.rule p{margin:0;color:#FFE7BD}
+.rule b{color:var(--amber)}
+
+.road{position:relative;padding-block:24px 8px}
+.phase{margin:40px 0 18px;display:flex;align-items:center;gap:14px}
+.phase:first-child{margin-top:8px}
+.phase .tag{margin:0;font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:8px 16px;background:var(--violet-mid);color:var(--accent-text)}
+.phase .tag.sat{background:var(--accent);color:var(--white)}
+.phase .tag.after{background:var(--green-bg);color:var(--green-text)}
+.phase .when{margin:0;color:var(--dim);font-size:15px;font-weight:600}
+
+.stops{list-style:none;margin:0;padding:0;position:relative}
+.stops::before{content:"";position:absolute;left:23px;top:8px;bottom:8px;width:2px;background:var(--violet-mid)}
+.stop{position:relative;display:flex;gap:18px;padding-bottom:16px}
+.dot{flex:none;position:relative;z-index:1;width:48px;height:48px;border-radius:50%;background:var(--card);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:17px;color:var(--accent-text)}
+.stop.key .dot{background:var(--accent);color:var(--white)}
+.stop.sat .dot{border-color:var(--accent-soft)}
+.stop.after .dot{border-color:var(--green);color:var(--green-text)}
+.card{flex:1;min-width:0;background:var(--card);border:1px solid var(--card-line);border-radius:20px;padding:20px 22px}
+.stop.key .card{background:var(--violet-deep);border-color:var(--violet-line)}
+.card h3{margin:0;font-size:20px;line-height:1.3}
+.card .t{margin:0 0 4px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--label)}
+.card p{margin:8px 0 0;color:var(--muted)}
+.stop.key .card p{color:var(--fg-2)}
+
+.msg{margin-top:14px;background:var(--band);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.msg p{margin:0;color:var(--fg-2);font-size:16px}
+.msg b{color:var(--fg)}
+.msg a{color:var(--accent-soft);text-decoration:underline}
+.hint{margin:16px 0 0;font-size:14px;color:var(--dim)}
+.copy{margin-top:12px;display:inline-flex;align-items:center;gap:8px;min-height:40px;border:0;border-radius:10px;padding:8px 14px;background:var(--violet-mid);color:var(--accent-text);font:600 15px var(--body);cursor:pointer}
+.copy:hover{background:#352C8A}
+.copy:focus-visible{outline:2px solid var(--accent-soft);outline-offset:2px}
+.copy.done{background:var(--green-bg);color:var(--green-text)}
+.link{margin-top:12px;display:inline-flex;align-items:center;gap:8px;font-weight:700;text-decoration:none;color:var(--accent-text)}
+.link:hover{color:var(--white)}
+
+.paths{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px}
+.paths div{background:var(--band);border-radius:14px;padding:14px 16px}
+.paths b{display:block;font-size:16px}
+.paths span{display:block;margin-top:4px;font-size:14px;color:var(--dim)}
+
+.finish{padding-block:40px 80px}
+.finish-box{background:var(--card);border:1px solid var(--card-line);border-radius:24px;padding:28px}
+.finish h2{margin:0 0 16px;font-family:var(--display);font-size:clamp(22px,3vw,28px)}
+.qa{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.qa div{background:var(--band);border-radius:14px;padding:14px 16px}
+.qa b{display:block;font-size:16px}
+.qa span{display:block;margin-top:4px;font-size:15px;color:var(--muted)}
+.contact{margin:20px 0 0;color:var(--muted)}
+.contact b{color:var(--fg)}
+@media (max-width:480px){h1{font-size:30px}.stops::before{left:19px}.dot{width:40px;height:40px;font-size:15px}.stop{gap:14px}.card{padding:18px}}
+</style>
+</head>
+<body>
+
+
+<header><div class="wrap"><div class="brand">HASH AI&nbsp;· Дегустация Лидоруба</div></div></header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Дорожная карта <span>партнёра</span></h1>
+    <p class="sub">Как&nbsp;привести человека на&nbsp;практикум 7&nbsp;ноября и&nbsp;довести его до&nbsp;решения. Семь остановок, три готовых сообщения.</p>
+    <p class="hint">Кнопка «Скопировать текст» сохраняет жирный шрифт и ссылку в слове «здесь» — вставляй прямо в Telegram.</p>
+    <div class="rule">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC86B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <p><b>Главное правило:</b> страницу участника отправляем только после регистрации в&nbsp;HASH&nbsp;AI по&nbsp;твоей ссылке. Без&nbsp;кабинета HASH&nbsp;AI доступ к&nbsp;Лидорубу не&nbsp;выдать.</p>
+    </div>
+  </div>
+</section>
+
+<section class="road">
+  <div class="wrap">
+
+    <div class="phase"><p class="tag">До практикума</p><p class="when">до субботы, 10:00</p></div>
+    <ol class="stops">
+      <li class="stop"><div class="dot">1</div><div class="card">
+        <p class="t">Пригласи</p><h3>Отправь приглашение и&nbsp;лендинг</h3>
+        <div class="msg"><p id="m1">Привет! 👋<br><br>В эту субботу, <b>7 ноября, в 11:00 МСК</b> пройдёт бесплатный практикум <b>«Дегустация Лидоруба: твой ИИ-агент за час»</b>.<br><br>Лидоруб — это сервис, где ИИ-агент сам пишет людям в Telegram и ведёт переписку.<br><br>За час ты:<br>✅ с нуля настроишь своего агента<br>✅ получишь доступ к сервису на 7 дней<br><br>Подробности <a href="https://api74.github.io/agent/">здесь</a>.<br><br>Хочешь участвовать — напиши мне <b>«АГЕНТ»</b>.</p></div>
+        <button class="copy" id="c1" data-target="m1" type="button">Скопировать текст</button>
+      </div></li>
+
+      <li class="stop"><div class="dot">2</div><div class="card">
+        <p class="t">Человек отвечает</p><h3>Он&nbsp;пишет тебе «АГЕНТ»</h3>
+        <p>Это сигнал, что&nbsp;интерес есть. Отвечай в&nbsp;тот&nbsp;же день, пока он&nbsp;тёплый.</p>
+      </div></li>
+
+      <li class="stop"><div class="dot">3</div><div class="card">
+        <p class="t">Регистрация</p><h3>Дай свою реф-ссылку HASH&nbsp;AI</h3>
+        <div class="msg"><p id="m2">Отлично! 🙌<br><br>Чтобы мы выдали тебе доступ к Лидорубу, зарегистрируйся в HASH AI — это <b>бесплатно</b>:<br>👉 [твоя реф-ссылка]<br><br>❗️ <b>Запомни email</b>, с которым регистрируешься, — он понадобится для записи.<br><br>Как зарегистрируешься — напиши мне.</p></div>
+        <button class="copy" id="c2" data-target="m2" type="button">Скопировать текст</button>
+      </div></li>
+
+      <li class="stop key"><div class="dot">4</div><div class="card">
+        <p class="t">Проверка</p><h3>Убедись, что&nbsp;он&nbsp;в&nbsp;твоей структуре</h3>
+        <p>Не&nbsp;видишь человека в&nbsp;структуре&nbsp;— не&nbsp;двигайся дальше. Помоги ему пройти регистрацию до&nbsp;конца.</p>
+      </div></li>
+
+      <li class="stop"><div class="dot">5</div><div class="card">
+        <p class="t">Запись</p><h3>Отправь страницу участника</h3>
+        <div class="msg"><p id="m3">Вижу тебя в HASH AI — ты в деле! 🎉<br><br>Осталось два шага:<br>1️⃣ записаться на практикум<br>2️⃣ подписаться на канал<br><br>Всё <a href="https://api74.github.io/uchastnik/">здесь</a>.<br><br>❗️ В форме укажи <b>тот же email, что в HASH AI</b>, иначе доступ не выдать.<br>📸 После записи пришли мне скрин «Ты записан».<br><br>⏰ Запись до субботы, 10:00.</p></div>
+        <button class="copy" id="c3" data-target="m3" type="button">Скопировать текст</button>
+      </div></li>
+    </ol>
+
+    <div class="phase"><p class="tag sat">Суббота, 7 ноября</p><p class="when">ты&nbsp;— первая помощь для&nbsp;своих людей</p></div>
+    <ol class="stops">
+      <li class="stop sat"><div class="dot">6</div><div class="card">
+        <p class="t">День практикума</p><h3>Будь на&nbsp;связи с&nbsp;утра до&nbsp;12:00</h3>
+        <p><b style="color:var(--fg)">До&nbsp;10:00</b>&nbsp;— убедись, что&nbsp;все твои прислали скрин «Ты&nbsp;записан». Кто&nbsp;не&nbsp;прислал&nbsp;— напомни про&nbsp;форму.<br><b style="color:var(--fg)">До&nbsp;10:55</b>&nbsp;— напомни: письмо с&nbsp;доступом придёт на&nbsp;почту, проверь спам.<br><b style="color:var(--fg)">11:00–12:00</b>&nbsp;— помогай в&nbsp;личке, если кто-то отстал.<br><b style="color:var(--fg)">Вечером</b>&nbsp;— «Как&nbsp;впечатления? Пришло уведомление от&nbsp;агента?»</p>
+      </div></li>
+    </ol>
+
+    <div class="phase"><p class="tag after">После</p><p class="when">доступ работает до&nbsp;пятницы, 13&nbsp;ноября</p></div>
+    <ol class="stops">
+      <li class="stop after"><div class="dot">7</div><div class="card">
+        <p class="t">Решение</p><h3>Созвонись и&nbsp;помоги выбрать путь</h3>
+        <p><b style="color:var(--fg)">Вс, 8&nbsp;ноября:</b> «Завтра стартует поток. Давай созвонимся на&nbsp;10&nbsp;минут». <b style="color:var(--fg)">Чт, 12&nbsp;ноября:</b> тем, кто&nbsp;не&nbsp;пошёл в&nbsp;поток,&nbsp;— «Завтра доступ закрывается, что&nbsp;решил?»</p>
+        <div class="paths">
+          <div><b>Поток 9–22 ноября</b><span>бесплатно при&nbsp;активном тарифе HASH&nbsp;AI</span></div>
+          <div><b>Настраиваю сам</b><span>год&nbsp;— 40&nbsp;000&nbsp;₽, «Безлимит»&nbsp;— 107&nbsp;000&nbsp;₽</span></div>
+          <div><b>Под ключ</b><span>10&nbsp;аккаунтов&nbsp;— 18&nbsp;500&nbsp;₽, 20&nbsp;— 25&nbsp;000&nbsp;₽</span></div>
+        </div>
+      </div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="finish">
+  <div class="wrap">
+    <div class="finish-box">
+      <h2>Если спросят</h2>
+      <div class="qa">
+        <div><b>«Зачем регистрироваться?»</b><span>Без кабинета HASH&nbsp;AI не&nbsp;выдать доступ к&nbsp;Лидорубу. Это бесплатно.</span></div>
+        <div><b>«Не&nbsp;дружу с&nbsp;техникой»</b><span>Всё&nbsp;— кнопки за&nbsp;ведущим, тексты пишет ИИ. Можно просто смотреть.</span></div>
+        <div><b>«Аккаунт забанят»</b><span>Аккаунт стоит 550&nbsp;₽ разово, рабочие живут больше 9&nbsp;месяцев.</span></div>
+        <div><b>«Дорого»</b><span>По&nbsp;кейсу касание ≈1,2&nbsp;₽, заинтересованный ≈16&nbsp;₽ против 300&nbsp;₽ за&nbsp;подписчика из&nbsp;рекламы.</span></div>
+        <div><b>«Некому писать»</b><span>В&nbsp;Лидорубе есть парсер: аудиторию собирают по&nbsp;ключевым словам.</span></div>
+        <div><b>«Не&nbsp;пришло письмо»</b><span>Проверить спам и&nbsp;совпадает&nbsp;ли email в&nbsp;форме и&nbsp;в&nbsp;HASH&nbsp;AI.</span></div>
+      </div>
+      <p class="contact">Что-то не&nbsp;сходится&nbsp;— пиши ведущему: <b>Максим Никитин, @Nikitin_Maksim</b></p>
+    </div>
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var el=document.getElementById(btn.dataset.target);
+    var html=el.innerHTML;
+    var c=el.cloneNode(true);
+    c.querySelectorAll('br').forEach(function(br){br.replaceWith('\n')});
+    c.querySelectorAll('a').forEach(function(a){a.replaceWith(a.textContent+' ('+a.href+')')});
+    var plain=c.textContent;
+    function ok(){btn.textContent='Скопировано';btn.classList.add('done');setTimeout(function(){btn.textContent='Скопировать текст';btn.classList.remove('done')},2000)}
+    function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');ok()}catch(e){btn.textContent='Выдели текст и скопируй'}}
+    try{
+      if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([plain],{type:'text/plain'})})]).then(ok,fallback);
+      }else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(plain).then(ok,fallback)}else{fallback()}
+    }catch(e){fallback()}
+  });
+});
+</script>
+
+</body>
+</html>
